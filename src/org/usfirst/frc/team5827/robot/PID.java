@@ -2,7 +2,7 @@ package org.usfirst.frc.team5827.robot;
 
 class PID
 {
-	double kP, kI, kD, P, I, D, errorN, errorL, threshold;
+	public double kP, kI, kD, P, I, D, errorN, errorL, threshold;
 
 	// P - P value
 	// kP - P modifyer

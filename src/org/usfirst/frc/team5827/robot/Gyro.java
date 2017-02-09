@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 public class Gyro
 {
-	PID pid;
-	ADXRS450_Gyro gyro;
+	public PID pid;
+	public ADXRS450_Gyro gyro;
 
 	public Gyro(double p, double i, double d)
 	{

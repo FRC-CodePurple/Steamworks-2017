@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Shifter
 {
-	DoubleSolenoid shift;
+	public DoubleSolenoid shift;
 
 	public Shifter(int id, int forward, int backward)
 	{

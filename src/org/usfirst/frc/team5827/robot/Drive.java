@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 public class Drive
 {
-	CANTalon r1;
-	CANTalon r2;
-	CANTalon r3;
-	CANTalon l1;
-	CANTalon l2;
-	CANTalon l3;
+	public CANTalon r1;
+	public CANTalon r2;
+	public CANTalon r3;
+	public CANTalon l1;
+	public CANTalon l2;
+	public CANTalon l3;
 
 	public Drive(CANTalon left1, CANTalon left2, CANTalon left3, CANTalon right1, CANTalon right2,
 			CANTalon right3)

@@ -44,7 +44,7 @@ public class JoySticks
 	public void UpdateID(Joystick joy, int driveType)
 	{
 		String name = joy.getName();
-		if (name.equals(xbox))
+		if (name.equals(xbox) || name.equals(logiGamePad))
 		{
 			if (driveType == 0)
 				speedValue = joy.getRawAxis(2) - joy.getRawAxis(3);
@@ -67,8 +67,8 @@ public class JoySticks
 			turningValue = joy.getRawAxis(2);
 			headingTarget += joy.getRawAxis(2);
 
-			shiftUp = joy.getRawButton(2);
-			shiftDown = joy.getRawButton(1);
+			shiftUp = joy.getRawButton(5);
+			shiftDown = joy.getRawButton(6);
 
 		} else if (name.equals(SteeringWheel))
 		{

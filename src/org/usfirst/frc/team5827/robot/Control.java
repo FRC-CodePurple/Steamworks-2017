@@ -16,16 +16,22 @@ public class Control
 	public Gyro gyro;
 	public Shifter shift;
 	public Joystick joy;
-    
+
 	public boolean gyroOn;
 
-	public Control(Drive Drive, int JoyPort, Shifter Shift)
+	public Control()
 	{
 		gyroOn = true;
-		drive = Drive;
+		drive = new Drive(new CANTalon(21), new CANTalon(22), new CANTalon(23), new CANTalon(31),
+				new CANTalon(32), new CANTalon(33));
+
 		controllers = new JoySticks();
 		gearFlipper = new GearFlipper(.001, .00001, 0.0, 0, 41);
-		gyro = new Gyro(.001, 0, 0);
+		
+		gyro = new Gyro(.01, 0, 0);
+		gyro.gyro.reset();
+		gyro.gyro.calibrate();
+		
 		shift = new Shifter(11, 1, 0);
 		joy = new Joystick(0);
 	}
@@ -34,17 +40,24 @@ public class Control
 	{
 		controllers.UpdateID(joy, 0);
 		gyro.update(controllers.headingTarget);
-		if(gyroOn) drive.arcadeDrive(controllers.speedValue, gyro.getPow());
-		else drive.arcadeDrive(controllers.speedValue, controllers.turningValue);
-		
-		if(controllers.shiftUp) shift.shiftTo(2);
-		if(controllers.shiftDown) shift.shiftTo(1);
-		
+		if (gyroOn)
+			drive.arcadeDrive(controllers.speedValue, gyro.getPow());
+		else
+			drive.arcadeDrive(controllers.speedValue, controllers.turningValue);
+
+		if (controllers.shiftUp)
+			shift.shiftTo(2);
+		if (controllers.shiftDown)
+			shift.shiftTo(1);
+
 		gearFlipper.update();
-		
-		if(controllers.gearHold) gearFlipper.setTarget(1111);
-		if(controllers.gearIn) gearFlipper.setTarget(1111);
-		if(controllers.gearOut) gearFlipper.setTarget(1111);
+
+		if (controllers.gearHold)
+			gearFlipper.setTarget(1111);
+		if (controllers.gearIn)
+			gearFlipper.setTarget(1111);
+		if (controllers.gearOut)
+			gearFlipper.setTarget(1111);
 	}
 
 }

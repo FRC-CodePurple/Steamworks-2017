@@ -22,16 +22,18 @@ import com.ctre.CANTalon;
 
 public class Robot extends IterativeRobot
 {
+	Control control;
+
 	@Override
 	public void robotInit()
 	{
-
+		control = new Control();
 	}
 
 	@Override
 	public void disabledInit()
 	{
-
+		
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic()
 	{
-
+		control.Drive();
 	}
 
 	@Override
