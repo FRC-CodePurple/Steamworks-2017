@@ -1,0 +1,33 @@
+sudo apt-get install  build-essential
+sudo apt-get install  clang ninja-build man git-all doxygen libboost-dev
+sudo apt-get install  cmake checkinstall pkg-config 
+
+sudo apt-get install  openjdk-8-jre openjdk-8-jdk ant
+sudo apt-get install  python3-numpy python3-scipy python3-matplotlib 
+sudo apt-get install  python-numpy python-scipy python-matplotlib
+sudo apt-get install  libgtk2.0-dev 
+
+
+sudo apt-get install  libtiff5-dev libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libpng-dev libavresample-dev libxine2-dev
+sudo apt-get install  libv4l-dev ffmpeg gphoto2 libgphoto2-dev 
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
+# Build OpenCV
+mkdir -p ~/repo
+cd ~/repo/
+git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout -b my-3.2.0 3.2.0
+mkdir -p build
+cd build
+
+# build and install using make
+#CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local ..
+#make
+#sudo make install
+
+# build and install using ninja
+CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -GNinja ..
+ninja
+sudo ninja install
+

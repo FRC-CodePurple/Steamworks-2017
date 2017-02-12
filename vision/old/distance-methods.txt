@@ -1,0 +1,16 @@
+2 ways to find distance (both find the solution in different ways, fundamentally the same though)
+
+Elizabeth's idea: 
+Place camera at set distance & known angle to gear peg, take picture
+Find ratio of longer:shorter side (the closer to 1:1 it is, the closer it is to 90 deg.)
+Angle += 10, repeat
+
+Gordon's idea:
+Place camera at set distance & known angle to gear peg, take picture
+Find center of fov & centroid (center of mass) of trapezoid and compare for each distance
+
+Both methods assume the camera's stays at a constant distance from gear peg (no offset)
+This doesn't mean anything though because moving to the side doesn't change the angle the camera's at, so it shouldn't change the solution we get
+
+We need to try both methods, but we should probably find which one works better....
+Elizabeth's idea is easy to find a lot of data points for, but Gordon's idea is faster to compute and more accurate overall

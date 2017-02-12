@@ -1,0 +1,23 @@
+Add relevant links to this document
+
+Installation:
+https://solarianprogrammer.com/2016/09/17/install-opencv-3-with-python-3-on-windows/ 
+http://answers.opencv.org/question/22584/adding-environment-variable-to-system-path/ 
+
+Vision tips:
+Cheezy poofs!!!!
+https://docs.google.com/presentation/d/1ediRsI-oR3-kwawFJZ34_ZTlQS2SDBLjZasjzZ-eXbQ/pub?start=false&loop=false&slide=id.g12d1a9e7b0_0_463 
+https://www.chiefdelphi.com/forums/showthread.php?t=147568&page=3 
+
+Roborio video stream:
+https://github.com/robotpy/roborio-packages/tree/2016/ipkg/mjpg-streamer 
+
+Corner detection:
+http://docs.opencv.org/3.2.0/d1/d89/tutorial_py_orb.html 
+http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_feature2d/py_table_of_contents_feature2d/py_table_of_contents_feature2d.html 
+http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_feature2d/py_orb/py_orb.html#orb 
+http://www.pyimagesearch.com/2014/11/17/non-maximum-suppression-object-detection-python/ 
+http://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/ 
+
+Cat detector: 
+http://www.pyimagesearch.com/2016/06/20/detecting-cats-in-images-with-opencv/

@@ -1,0 +1,37 @@
+Tutorial:
+https://solarianprogrammer.com/2016/09/17/install-opencv-3-with-python-3-on-windows/
+
+Install python 3.5, 32 bit (or whatever version) for all users - root (check all boxes) https://www.python.org/downloads/
+
+To check if it worked, just enter python in terminal 
+
+Download the Numpy whl file from http://www.lfd.tlyuci.edu/~gohlke/pythonlibs/#numpy using version that corresponds w/ python version 
+Downlad the OpenCV whl file from http://www.lfd.uci.edu/~gohlke/pythonlibs/ using package that matches the Python and Numpy version
+
+Open terminal and enter this command to install Numpy: pip install "[version of numpy you downloaded]"
+
+Enter this command to install OpenCV: pip install “[version of opencv you downloaded]
+
+Make sure it says “successfully installed _________” after each command
+
+Add opencv to your path by either making a new environment variable...
+Name of variable = OPENCV_DIR, value = directory to opencv, eg, downloads\opencv\Build\x64\vc14 if opencv’s in downloads
+
+Or you can make a batch file...
+Find the vc14 folder in OpenCV then make a txt file:
+For Windows:
+SET OPENCV_HOME=C:\opencv\build\x64\vc14
+SET PATH=%PATH%;%OPENCV_HOME%\bin
+
+For Linux:
+SET OPENCV_HOME=C:\opencv\build\x64\vc14
+SET PATH=$PATH;$OPENCV_HOME\bin
+
+To check if the download worked open the Python shell and write:
+import cv2
+
+If that returns nothing then try this:
+print(cv2.__version__)
+
+If that returns the OpenCV version, you're good
+If either line throws an error, there's a problem
