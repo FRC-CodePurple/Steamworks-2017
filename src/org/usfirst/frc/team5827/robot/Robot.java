@@ -60,6 +60,7 @@ public class Robot extends IterativeRobot
 	{
 		control.gyro.gyro.reset();
 		control.gyro.gyro.calibrate();
+		control.controllers.headingTarget = 0;
 	}
 
 	@Override
