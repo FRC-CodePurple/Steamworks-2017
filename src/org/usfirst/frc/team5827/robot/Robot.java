@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,6 +24,7 @@ import com.ctre.CANTalon;
 public class Robot extends IterativeRobot
 {
 	Control control;
+	
 
 	@Override
 	public void robotInit()
@@ -50,13 +52,14 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousPeriodic()
 	{
-
+		
 	}
 
 	@Override
 	public void teleopInit()
 	{
-
+		control.gyro.gyro.reset();
+		control.gyro.gyro.calibrate();
 	}
 
 	@Override

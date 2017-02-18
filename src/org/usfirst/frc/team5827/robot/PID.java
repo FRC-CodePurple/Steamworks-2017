@@ -4,6 +4,7 @@ class PID
 {
 	public double kP, kI, kD, P, I, D, errorN, errorL, threshold;
 
+	public double multiplier;
 	// P - P value
 	// kP - P modifyer
 	// I - I value
@@ -19,6 +20,7 @@ class PID
 		this.kI = kI;
 		this.kD = kD;
 		threshold = 1;
+		multiplier = 1;
 	}
 
 	public void update(double current, double target)// should be called once
@@ -30,7 +32,7 @@ class PID
 		P = kP * errorN; // set P value
 
 		I = I + (kI * errorN); // set I value
-		if (Math.abs((float) errorN) < 1)
+		if (Math.abs(errorN) < 1)
 			I = 0; // reset I value within tolerance
 
 		D = kD * (errorN - errorL); // set D value
@@ -42,7 +44,7 @@ class PID
 			return threshold;
 		if (P + I + D < -threshold)
 			return -threshold;
-		return P + I + D;// add values
+		return (P + I + D) * multiplier;// add values
 	}
 
 	public void setThreshold(double threshold)

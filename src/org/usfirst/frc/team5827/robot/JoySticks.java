@@ -55,10 +55,15 @@ public class JoySticks
 			rightDrive = joy.getRawAxis(5);
 
 			turningValue = joy.getRawAxis(0);
-			headingTarget += joy.getRawAxis(0);
+			headingTarget += joy.getRawAxis(0) * 2;
 
-			shiftUp = joy.getRawButton(2);
-			shiftDown = joy.getRawButton(1);
+			shiftUp = joy.getRawButton(5);
+			shiftDown = joy.getRawButton(6);
+			
+			gearHold = joy.getRawButton(1);
+			gearOut = joy.getRawButton(2);
+			gearIn = joy.getRawButton(3);
+			
 
 		} else if (name.equals(joyStick))
 		{
