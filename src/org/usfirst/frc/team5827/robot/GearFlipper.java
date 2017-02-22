@@ -3,29 +3,29 @@ package org.usfirst.frc.team5827.robot;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 
 public class GearFlipper
 {
 	PID pid;
-	AnalogInput location;
-	Victor motor;
+	CANTalon motor;
 	double target;
 
-	public GearFlipper(double p, double i, double d, int inputPort, int motorID)
+	public GearFlipper(double p, double i, double d, int motorID)
 	{
 		pid = new PID(p, i, d);
-		location = new AnalogInput(inputPort);
-		motor = new Victor(motorID);
-		target = 2560;
-		pid.multiplier = .5;
+		motor = new CANTalon(motorID);
+		target = 0;
+		pid.multiplier = .30;
+		
 	}
 
 	public void update()
 	{
-		pid.update(location.getValue(), target);
-		motor.set(-pid.getPow());
-		System.out.println(location.getValue());;
+		pid.update(motor.getEncPosition(), target);
+		motor.set(pid.getPow());
+		System.out.println(motor.getEncPosition());
 	}
 
 	public void setTarget(double target)

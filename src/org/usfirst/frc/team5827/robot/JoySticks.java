@@ -40,6 +40,22 @@ public class JoySticks
 		headingTarget = 0;
 
 	}
+	
+	public void reset()
+	{
+		speedValue = 0;
+		turningValue = 0;
+		shiftUp = false;
+		shiftDown = false;
+		gearIn = false;
+		gearOut = false;
+		gearHold = false;
+		gearMove = false;
+		climbValue = 0;
+		leftDrive = 0;
+		rightDrive = 0;
+		headingTarget = 0;
+	}
 
 	public void UpdateID(Joystick joy, int driveType)
 	{
@@ -86,4 +102,6 @@ public class JoySticks
 
 		}                                                                  
 	}
+	
+	
 }
