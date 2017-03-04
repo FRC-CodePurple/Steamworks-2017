@@ -11,21 +11,26 @@ public class GearFlipper
 	PID pid;
 	CANTalon motor;
 	double target;
+	AnalogInput pos;
 
 	public GearFlipper(double p, double i, double d, int motorID)
 	{
 		pid = new PID(p, i, d);
 		motor = new CANTalon(motorID);
-		target = 0;
-		pid.multiplier = .30;
-		
+		target = 2.6;
+		pid.multiplier = 1;
+		pid.threshold = .6;
+		pos = new AnalogInput(0);
+		pid.iThresh = .05;
 	}
 
 	public void update()
 	{
-		pid.update(motor.getEncPosition(), target);
+		pid.update(pos.getVoltage(), target);
 		motor.set(pid.getPow());
-		System.out.println(motor.getEncPosition());
+		System.out.print("pos - " +pos.getVoltage());
+		System.out.print(" targ - " + target);
+		System.out.println("power - " + pid.getPow());		
 	}
 
 	public void setTarget(double target)

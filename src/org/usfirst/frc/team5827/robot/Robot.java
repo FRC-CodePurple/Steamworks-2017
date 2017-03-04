@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -31,6 +33,9 @@ public class Robot extends IterativeRobot
 	public Gyro gyro;
 	public Shifter shift;
 	public Joystick joy;
+	public Timer autoTime;
+
+	public PID drivePID;
 
 	public CANTalon lift1;
 	public CANTalon lift2;
@@ -42,26 +47,32 @@ public class Robot extends IterativeRobot
 
 	public int gearMode;
 	public boolean driverControl;
+	public int autoSel = 0;
+	public Encoder encLeft;
+	public Encoder encRight;
 	
-	NetworkTable table; 
+	NetworkTable table;
 
 	@Override
 	public void robotInit()
 	{
+		autoTime = new Timer();
 		lift1 = new CANTalon(16);
 		lift2 = new CANTalon(19);
 
+		drivePID = new PID(.01, 0, 0);
 		table = NetworkTable.getTable("table");
-		
+
 		gyroOn = false;
 		drive = new Drive(new CANTalon(14), new CANTalon(11), new CANTalon(10), new CANTalon(18),
 				new CANTalon(13), new CANTalon(15));
 
 		gearTime = new Timer();
 		controllers = new JoySticks();
-		gearFlipper = new GearFlipper(.001, 0.0, 0.002, 17);
+		gearFlipper = new GearFlipper(1.2, .01, 0.25, 17);
 
 		gyro = new Gyro(.01, 0, 0);
+		gyro.pid.multiplier = .5;
 		gyro.gyro.calibrate();
 
 		shift = new Shifter(2, 1, 0);
@@ -70,6 +81,9 @@ public class Robot extends IterativeRobot
 		gearMode = 0;
 		driverControl = true;
 		gearOut = false;
+
+		encLeft = new Encoder(0, 1);
+		encRight = new Encoder(2, 3);
 	}
 
 	@Override
@@ -87,34 +101,102 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousInit()
 	{
-		gyro.gyro.reset();
-		gyro.gyro.calibrate();
+		/*
+		 * gyro.gyro.reset(); gyro.gyro.calibrate();
+		 */
 		controllers.reset();
+		autoTime.reset();
+		autoTime.start();
+		gearFlipper.setTarget(2.6);
 	}
 
 	@Override
 	public void autonomousPeriodic()
 	{
+		System.out.println(autoTime.get());
+		if(autoSel == 0)
+		{
+			if (autoTime.get() < 5)
+			{
+				drive.arcadeDrive(.5, 0);
+			}
+			else drive.arcadeDrive(0, 0);
+		}
+		if (autoSel == 1)
+		{
+			if (autoTime.get() < 3)
+			{
+				drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2, 1.181);
+				gyro.update(0);
+				drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			} else if (autoTime.get() < 4)
+			{
+				drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2, 1.181);
+				gyro.update(60);
+				drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			} else if (autoTime.get() < 7)
+			{
+				drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2,
+						1.181 + 1.33858);
+				gyro.update(60);
+				drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			} else 
+			{
+				gearFlipper.setTarget(2.0);
+			}
+
+		}
+		if (autoSel == 2)
+		{
+			drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2, 1.181);
+			drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			gearFlipper.setTarget(2.0);
+		}
+		if (autoSel == 3)
+		{
+			if (autoTime.get() < 3)
+			{
+				drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2, 1.181);
+				gyro.update(0);
+				drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			} else if (autoTime.get() < 4)
+			{
+				drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2, 1.181);
+				gyro.update(-60);
+				drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			} else if (autoTime.get() < 7)
+			{
+				drivePID.update((encLeft.getDistance() + encRight.getDistance()) / 2,
+						1.181 + 1.33858);
+				gyro.update(-60);
+				drive.arcadeDrive(drivePID.getPow(), gyro.getPow());
+			} else
+			{
+				gearFlipper.setTarget(2.0);
+			}
+		}
+		gearFlipper.update();
 
 	}
 
 	@Override
 	public void teleopInit()
 	{
-		gyro.gyro.reset();
-		gyro.gyro.calibrate();
+		/*
+		 * gyro.gyro.reset(); gyro.gyro.calibrate();
+		 */
 		controllers.reset();
 	}
 
 	@Override
 	public void teleopPeriodic()
 	{
-		//displacement, Xdistance, Ydistance, angle
-		System.out.println(table.getNumber("displacement",0));
-		System.out.println(table.getNumber("X distance",0));  
-		System.out.println(table.getNumber("Y distance",0));  
-		System.out.println(table.getNumber("angle",0));       
-		
+		// displacement, Xdistance, Ydistance, angle
+		/*System.out.println(table.getNumber("displacement", 0));
+		System.out.println(table.getNumber("X distance", 0));
+		System.out.println(table.getNumber("Y distance", 0));
+		System.out.println(table.getNumber("angle", 0));*/
+
 		Drive();
 	}
 
@@ -143,7 +225,7 @@ public class Robot extends IterativeRobot
 			{
 				if (controllers.gearOut)
 				{
-					gearFlipper.setTarget(-175);
+					gearFlipper.setTarget(2.0);
 				}
 			} else if (gearMode == 1)
 			{
@@ -158,11 +240,14 @@ public class Robot extends IterativeRobot
 
 			if (controllers.gearHold)
 			{
-				gearFlipper.setTarget(0);
+				gearFlipper.setTarget(2.7);
 			}
 
 			if (controllers.gearIn)
-				gearFlipper.setTarget(700);
+			{
+				gearFlipper.setTarget(4.2);
+				System.out.println("Press!");
+			}
 
 			if (joy.getRawButton(4))
 			{
@@ -174,29 +259,19 @@ public class Robot extends IterativeRobot
 				lift2.set(0);
 			}
 		}
-		
 
 		if (gearOut)
 		{
-			
-			gearTime.start();
-			System.out.println(gearTime.get());
-			driverControl = false;
-			drive.arcadeDrive(0, gyro.getPow());
-			gearFlipper.setTarget(-175);
-			if (gearTime.get() > 1)
-			{
-				drive.arcadeDrive(-.5, gyro.getPow());
-			}
-			if (gearTime.get() > 1.5)
-			{
-				drive.arcadeDrive(0, gyro.getPow());
-				gearFlipper.setTarget(0);
-				gearTime.reset();
-				gearTime.stop();
-				gearOut = false;
-				driverControl = true;
-			}
+
+			/*
+			 * gearTime.start(); System.out.println(gearTime.get());
+			 * driverControl = false; drive.arcadeDrive(0, gyro.getPow());
+			 * gearFlipper.setTarget(-175); if (gearTime.get() > 1) {
+			 * drive.arcadeDrive(-.5, gyro.getPow()); } if (gearTime.get() >
+			 * 1.5) { drive.arcadeDrive(0, gyro.getPow());
+			 * gearFlipper.setTarget(2.6); gearTime.reset(); gearTime.stop();
+			 * gearOut = false; driverControl = true; }
+			 */
 		}
 		gyro.update(controllers.headingTarget);
 		gearFlipper.update();

@@ -63,7 +63,7 @@ public class JoySticks
 		if (name.equals(xbox) || name.equals(logiGamePad))
 		{
 			if (driveType == 0)
-				speedValue = joy.getRawAxis(2) - joy.getRawAxis(3);
+				speedValue = joy.getRawAxis(3) - joy.getRawAxis(2);
 			else
 				speedValue = joy.getRawAxis(1);
 

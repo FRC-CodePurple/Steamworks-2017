@@ -3,7 +3,7 @@ package org.usfirst.frc.team5827.robot;
 class PID
 {
 	public double kP, kI, kD, P, I, D, errorN, errorL, threshold;
-
+	public double iThresh;
 	public double multiplier;
 	// P - P value
 	// kP - P modifyer
@@ -21,6 +21,7 @@ class PID
 		this.kD = kD;
 		threshold = 1;
 		multiplier = 1;
+		iThresh = 1;
 	}
 
 	public void update(double current, double target)// should be called once
@@ -40,9 +41,9 @@ class PID
 
 	public double getPow()// get motor power
 	{
-		if (P + I + D > threshold)
+		if ((P + I + D)* multiplier > threshold)
 			return threshold;
-		if (P + I + D < -threshold)
+		if ((P + I + D)* multiplier < -threshold)
 			return -threshold;
 		return (P + I + D) * multiplier;// add values
 	}
