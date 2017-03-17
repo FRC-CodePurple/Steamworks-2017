@@ -47,6 +47,16 @@ public class Drive
 			l3.set(0);
 		}
 	}
+	
+	public void setBrake(boolean brake)
+	{
+		l1.enableBrakeMode(brake);
+		l2.enableBrakeMode(brake);
+		l3.enableBrakeMode(brake);
+		r1.enableBrakeMode(brake);
+		r2.enableBrakeMode(brake);
+		r3.enableBrakeMode(brake);
+	}
 
 	public void arcadeDrive(double power, double turn)
 	{

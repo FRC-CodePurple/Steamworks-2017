@@ -28,9 +28,9 @@ public class GearFlipper
 	{
 		pid.update(pos.getVoltage(), target);
 		motor.set(pid.getPow());
-		System.out.print("pos - " +pos.getVoltage());
+		/*System.out.print("pos - " +pos.getVoltage());
 		System.out.print(" targ - " + target);
-		System.out.println("power - " + pid.getPow());		
+		System.out.println("power - " + pid.getPow());		*/
 	}
 
 	public void setTarget(double target)

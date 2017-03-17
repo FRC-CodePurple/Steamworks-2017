@@ -23,6 +23,9 @@ public class JoySticks
 	public double leftDrive;
 	public double rightDrive;
 	public double headingTarget;
+	public double speedNow;
+	public boolean slowMode;
+	public double gearAdjust;
 
 	public JoySticks()
 	{
@@ -38,6 +41,9 @@ public class JoySticks
 		leftDrive = 0;
 		rightDrive = 0;
 		headingTarget = 0;
+		speedNow = 0;
+		slowMode = false;
+		gearAdjust = 0;
 
 	}
 	
@@ -55,6 +61,9 @@ public class JoySticks
 		leftDrive = 0;
 		rightDrive = 0;
 		headingTarget = 0;
+		speedNow = 0;
+		slowMode = false;
+		gearAdjust = 0;
 	}
 
 	public void UpdateID(Joystick joy, int driveType)
@@ -80,6 +89,11 @@ public class JoySticks
 			gearOut = joy.getRawButton(2);
 			gearIn = joy.getRawButton(3);
 			
+			slowMode = joy.getRawButton(8);
+			gearAdjust = joy.getRawAxis(5);
+			
+			
+			
 
 		} else if (name.equals(joyStick))
 		{
@@ -100,7 +114,17 @@ public class JoySticks
 			shiftUp = joy.getRawButton(2);
 			shiftDown = joy.getRawButton(1);
 
-		}                                                                  
+		}
+		
+		if(slowMode)
+		{
+			speedValue /= 2;
+		}
+		
+		if(Math.abs(gearAdjust) < .1)
+		{
+			gearAdjust = 0;
+		}
 	}
 	
 	

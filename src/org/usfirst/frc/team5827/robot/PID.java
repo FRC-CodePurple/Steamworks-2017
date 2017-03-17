@@ -5,6 +5,9 @@ class PID
 	public double kP, kI, kD, P, I, D, errorN, errorL, threshold;
 	public double iThresh;
 	public double multiplier;
+	public boolean check;
+	public double checkErrThresh;
+	public double checkPowThresh;
 	// P - P value
 	// kP - P modifyer
 	// I - I value
@@ -16,16 +19,19 @@ class PID
 
 	public PID(double kP, double kI, double kD)
 	{
-		this.kP = kP; // set modifyer values
+		this.kP = kP; // set modifier values
 		this.kI = kI;
 		this.kD = kD;
 		threshold = 1;
 		multiplier = 1;
 		iThresh = 1;
+		checkErrThresh = 100;
+		checkPowThresh = 0.1;
+		check = false;
 	}
 
 	public void update(double current, double target)// should be called once
-														// every loop
+														//	 every loop
 	{
 		errorL = errorN;
 		errorN = target - current; // update error values
@@ -37,13 +43,19 @@ class PID
 			I = 0; // reset I value within tolerance
 
 		D = kD * (errorN - errorL); // set D value
+
+		if ((Math.abs(errorN) < checkErrThresh) && (Math.abs(getPow()) < checkPowThresh))
+			check = true;
+		else
+			check = false;
+
 	}
 
 	public double getPow()// get motor power
 	{
-		if ((P + I + D)* multiplier > threshold)
+		if ((P + I + D) * multiplier > threshold)
 			return threshold;
-		if ((P + I + D)* multiplier < -threshold)
+		if ((P + I + D) * multiplier < -threshold)
 			return -threshold;
 		return (P + I + D) * multiplier;// add values
 	}
