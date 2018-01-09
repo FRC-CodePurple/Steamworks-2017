@@ -19,15 +19,17 @@ public class JoySticks
 	public boolean gearOut;
 	public boolean gearHold;
 	public boolean gearMove;
-	public double climbValue;
+	public boolean climbValueFast;
+	public boolean climbValueSlow;
 	public double leftDrive;
 	public double rightDrive;
 	public double headingTarget;
 	public double speedNow;
 	public boolean slowMode;
 	public double gearAdjust;
+	public Joystick joy;
 
-	public JoySticks()
+	public JoySticks(int port)
 	{
 		speedValue = 0;
 		turningValue = 0;
@@ -37,16 +39,18 @@ public class JoySticks
 		gearOut = false;
 		gearHold = false;
 		gearMove = false;
-		climbValue = 0;
+		climbValueFast = false;
+		climbValueSlow = false;
 		leftDrive = 0;
 		rightDrive = 0;
 		headingTarget = 0;
 		speedNow = 0;
 		slowMode = false;
 		gearAdjust = 0;
+		joy = new Joystick(port);
 
 	}
-	
+
 	public void reset()
 	{
 		speedValue = 0;
@@ -57,7 +61,8 @@ public class JoySticks
 		gearOut = false;
 		gearHold = false;
 		gearMove = false;
-		climbValue = 0;
+		climbValueFast = false;
+		climbValueSlow = false;
 		leftDrive = 0;
 		rightDrive = 0;
 		headingTarget = 0;
@@ -66,7 +71,7 @@ public class JoySticks
 		gearAdjust = 0;
 	}
 
-	public void UpdateID(Joystick joy, int driveType)
+	public void UpdateID(int driveType)
 	{
 		String name = joy.getName();
 		if (name.equals(xbox) || name.equals(logiGamePad))
@@ -84,48 +89,29 @@ public class JoySticks
 
 			shiftUp = joy.getRawButton(5);
 			shiftDown = joy.getRawButton(6);
-			
+
 			gearHold = joy.getRawButton(1);
 			gearOut = joy.getRawButton(2);
 			gearIn = joy.getRawButton(3);
-			
-			slowMode = joy.getRawButton(8);
+
+			slowMode = joy.getRawButton(4);
 			gearAdjust = joy.getRawAxis(5);
-			
-			
-			
 
-		} else if (name.equals(joyStick))
-		{
-
-			speedValue = joy.getRawAxis(1);
-			turningValue = joy.getRawAxis(2);
-			headingTarget += joy.getRawAxis(2);
-
-			shiftUp = joy.getRawButton(5);
-			shiftDown = joy.getRawButton(6);
-
-		} else if (name.equals(SteeringWheel))
-		{
-			speedValue = joy.getRawAxis(2) - joy.getRawAxis(3);
-			turningValue = joy.getRawAxis(0);
-			headingTarget += joy.getRawAxis(0);
-
-			shiftUp = joy.getRawButton(2);
-			shiftDown = joy.getRawButton(1);
+			climbValueFast = joy.getRawButton(8);
+			climbValueSlow = joy.getRawButton(7);
 
 		}
-		
-		if(slowMode)
+
+		if (slowMode)
 		{
 			speedValue /= 2;
+			turningValue/= 2;
 		}
-		
-		if(Math.abs(gearAdjust) < .1)
+
+		if (Math.abs(gearAdjust) < .1)
 		{
 			gearAdjust = 0;
 		}
 	}
-	
-	
+
 }

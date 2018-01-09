@@ -13,24 +13,24 @@ public class GearFlipper
 	double target;
 	AnalogInput pos;
 
-	public GearFlipper(double p, double i, double d, int motorID)
+	public GearFlipper(double p, double i, double d, double threshold, double ErrorThreshold,
+			double PowerThreshold, double multiplier, int motorID)
 	{
-		pid = new PID(p, i, d);
+		pid = new PID(p, i, d, threshold, ErrorThreshold, PowerThreshold, multiplier);
 		motor = new CANTalon(motorID);
 		target = 2.6;
-		pid.multiplier = 1;
-		pid.threshold = .6;
 		pos = new AnalogInput(0);
-		pid.iThresh = .05;
 	}
 
 	public void update()
 	{
 		pid.update(pos.getVoltage(), target);
 		motor.set(pid.getPow());
-		/*System.out.print("pos - " +pos.getVoltage());
-		System.out.print(" targ - " + target);
-		System.out.println("power - " + pid.getPow());		*/
+		/*
+		 * System.out.print("pos - " +pos.getVoltage());
+		 * System.out.print(" targ - " + target); System.out.println("power - "
+		 * + pid.getPow());
+		 */
 	}
 
 	public void setTarget(double target)
